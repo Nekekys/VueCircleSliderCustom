@@ -267,7 +267,14 @@
                 this.circleSliderState.updateCurrentStepFromAngle(angle)
                 this.angle = this.circleSliderState.angleValue
                 this.currentStepValue = this.circleSliderState.currentStep
-                this.$emit('update:modelValue', this.currentStepValue)
+                this.$emit('update:value', this.currentStepValue)
+            },
+
+            updateAngleFromPropValue (angle) {
+                this.circleSliderState.updateCurrentStepFromAngle(angle)
+                this.angle = this.circleSliderState.angleValue
+                this.currentStepValue = this.circleSliderState.currentStep
+                // this.$emit('update:value', this.currentStepValue)
             },
 
             /*
@@ -275,10 +282,11 @@
             updateFromPropValue (value) {
                 let stepValue = this.fitToStep(value)
                 this.circleSliderState.updateCurrentStepFromValue(stepValue)
-
+                this.animateSliderFromPropValue(this.angle, this.circleSliderState.angleValue)
                 this.angle = this.circleSliderState.angleValue
+
                 this.currentStepValue = stepValue
-                this.$emit('update:modelValue', this.currentStepValue)
+                // this.$emit('update:value', this.currentStepValue)
             },
 
             /*
@@ -307,27 +315,32 @@
                 }
 
                 window.requestAnimationFrame(animate)
+            },
+            animateSliderFromPropValue (startAngle, endAngle) {
+                const direction = startAngle < endAngle ? 1 : -1
+                const curveAngleMovementUnit = direction * this.circleSliderState.angleUnit * 2
+
+                const animate = () => {
+                    if (Math.abs(endAngle - startAngle) < Math.abs(2 * curveAngleMovementUnit)) {
+                        this.updateAngleFromPropValue(endAngle)
+                    } else {
+                        const newAngle = startAngle + curveAngleMovementUnit
+                        this.updateAngleFromPropValue(newAngle)
+                        this.animateSliderFromPropValue(newAngle, endAngle)
+                    }
+                }
+
+                window.requestAnimationFrame(animate)
             }
         },
         watch: {
-            '$props.value':  function(newVal, oldVal) {
-                console.log(newVal)
-                this.updateFromPropValue(newVal)
-            },
             value: {
                 handler(newValue, oldValue) {
-                    console.log(123)
+                    if(typeof newValue === 'string') newValue = 0
+                    console.log(newValue, oldValue)
+                    this.updateFromPropValue(newValue)
                 }
             }
-        },
-        setup(props){
-
-            //const value = ref(props.value)
-
-            console.log(props.value)
-            watch(() => props.value, (newVal) => {
-                console.log(newVal)
-            }, {immediate: true})
         }
     }
 </script>

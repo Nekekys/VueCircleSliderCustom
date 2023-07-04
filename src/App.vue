@@ -10,7 +10,7 @@
 </script>
 
 <template>
- <CircleSliderCustom v-model="sliderValue" >{{sliderValue}}</CircleSliderCustom>
+ <CircleSliderCustom v-model:value="sliderValue" >{{sliderValue}}</CircleSliderCustom>
  <input v-model="sliderValue" type="number">
  <button @click="click">+</button>
 </template>
