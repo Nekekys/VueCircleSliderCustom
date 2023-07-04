@@ -1,5 +1,5 @@
 <script setup>
- import CircleSliderCustom from './components/CircleSliderCustom.vue'
+ import CircleSlider from './components/CircleSlider.vue'
  import {ref} from "vue";
 
  const sliderValue = ref(0)
@@ -10,7 +10,7 @@
 </script>
 
 <template>
- <CircleSliderCustom v-model:value="sliderValue" >{{sliderValue}}</CircleSliderCustom>
+ <CircleSlider v-model:value="sliderValue" >{{sliderValue}}</CircleSlider>
  <input v-model="sliderValue" type="number">
  <button @click="click">+</button>
 </template>
