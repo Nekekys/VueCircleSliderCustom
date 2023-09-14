@@ -12,11 +12,10 @@ export default class TouchPosition {
     /*
      */
     setNewPosition (e) {
-
         const dimensions = this.containerElement.getBoundingClientRect()
         const side = dimensions.width
         this.center = side / 2
-        if(this.mirror) this.relativeX = side - e.clientX - dimensions.left
+        if(this.mirror) this.relativeX = side - (e.clientX - dimensions.left)
         else this.relativeX = e.clientX - dimensions.left
         this.relativeY = e.clientY - dimensions.top
     }
